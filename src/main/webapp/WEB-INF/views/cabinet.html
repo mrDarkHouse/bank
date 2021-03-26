@@ -3,8 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <title>Cabinet</title>
+    <link th:href="@{/resources/css/style.css}" rel="stylesheet" />
+    <script type="text/javascript" th:src="@{/resources/js/script.js}"></script>
 </head>
 <body>
-<p th:text="${name}"></p>
+
+    <div class="line">
+        <h1 th:text="${user.getLogin()}"></h1>
+    </div>
+    <div class="line">
+        <form th:action="@{/login}" class="logout" method="POST">
+            <input type="submit" class="logout" value="Log out" />
+        </form>
+    </div>
+    <br>
+
+    <input type="button" onclick="addAccount()" value="Add account">
+    <div class="divider"></div>
+
+    <input type="button" onclick="showOperationHistory()" value="History">
+    <input type="button" onclick="showAllAccountsInfo()" value="All info">
+    <br><br>
+
+    <table id="accounts" style="width:100px;float: left;">
+        <caption>Accounts</caption>
+<!--        <tr th:each="acc:${accounts}">-->
+<!--            <td th:text="${acc.getId()}">id</td>-->
+<!--        </tr>-->
+    </table>
+
+    <table style="width:140px; float: left;margin: 1px;border: 0"></table>
+
+    <table id="accountInfo" style="width:200px;float: left; ">
+        <caption>Account Info</caption>
+    </table>
+
+    <table style="width:140px;float: left;margin: 1px;border: 0"></table>
+
+    <table id="historyTable" style="display:none;width:500px;float: left;">
+<!--        <caption>History</caption>-->
+    </table>
+    <table id="allAccountsTable" style="display:none;width:500px;float: left;">
+<!--        <caption>All accounts</caption>-->
+    </table>
+
+    <script>
+        loadAccounts();
+        // document.getElementById("accounts").rows[0].cells[0].click();
+    </script>
+
 </body>
 </html>

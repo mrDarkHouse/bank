@@ -13,9 +13,9 @@ import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 
-//@Configuration
-//@ComponentScan("ru.vsu.cs.postnikov.banktask")
-//@EnableWebMvc
+@Configuration
+@ComponentScan("ru.vsu.cs.postnikov.banktask")
+@EnableWebMvc
 public class SpringConfig implements WebMvcConfigurer {
 
     private final ApplicationContext applicationContext;

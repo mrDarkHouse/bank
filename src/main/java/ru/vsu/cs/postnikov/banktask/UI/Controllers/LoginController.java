@@ -11,6 +11,8 @@ import ru.vsu.cs.postnikov.banktask.Model.User;
 import ru.vsu.cs.postnikov.banktask.Services.Manager;
 import ru.vsu.cs.postnikov.banktask.Services.Operations.RegisterUser;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Controller
 public class LoginController {
     private Manager manager;
@@ -21,18 +23,22 @@ public class LoginController {
     }
 
     @PostMapping("/register")
-    public String sendRegister(@ModelAttribute("user") User user){
+    public String sendRegister(@ModelAttribute("user") User user, HttpServletRequest request){
         if(manager.executeOperation(new RegisterUser(user.getLogin(), user.getPassword()))) {
             User newUser = manager.checkLoginCredentials(user.getLogin(), user.getPassword());
+            request.getSession().setAttribute("user", newUser);
             return "redirect:/cabinet/" + newUser.getId();
         }else return "redirect:/login";
     }
 
     @PostMapping("/login")
-    public String sendLogin(@ModelAttribute("user") User user){
+    public String sendLogin(@ModelAttribute("user") User user, HttpServletRequest request){
         User check = manager.checkLoginCredentials(user.getLogin(), user.getPassword());
         if(check == null) return "redirect:/login";
-        else return "redirect:/cabinet/" + check.getId();
+        else {
+            request.getSession().setAttribute("user", check);
+            return "redirect:/cabinet/" + check.getId();
+        }
     }
 
     @GetMapping("/login")

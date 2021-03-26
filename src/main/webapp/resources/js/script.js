@@ -18,7 +18,7 @@ function openTab(evt, tabName) {
 function chooseAccount(userAccountIndex) {
     let x = new XMLHttpRequest();
     x.accountIndex = userAccountIndex;
-    x.open("GET", "/cabinet?action=getAcc&index=" + userAccountIndex, true);
+    x.open("GET", "/cabinet/accounts/" + userAccountIndex, true);
     x.onload = callbackAboutAccount;
     x.send(null);
 }
@@ -36,8 +36,8 @@ function callbackAboutAccount() {
             row.insertCell();
         }
     }
-    table.rows[0].cells[0].innerHTML = "<p style='font-size: 20px'>" + id + "</p>";
-    table.rows[1].cells[0].innerHTML = "<p style='font-size: 20px'>" + money+"$" + "</p>";
+    table.rows[0].cells[0].innerHTML = "<h style='font-size: 20px'>" + id + "</h>";
+    table.rows[1].cells[0].innerHTML = "<h style='font-size: 20px'>" + money+"$" + "</h>";
     table.rows[2].cells[0].innerHTML = "<button style='font-size: 20px;width: 100%' " +
         "onclick='addMoney("+id+","+this.accountIndex+")'>Add money</button>";
     table.rows[3].cells[0].innerHTML = "<button style='font-size: 20px;width: 100%' " +
@@ -48,7 +48,7 @@ function callbackAboutAccount() {
 
 function loadAccounts() {
     let x = new XMLHttpRequest();
-    x.open("GET", "/cabinet?action=getAccList", true);
+    x.open("GET", "/cabinet/accounts", true);
     x.onload = callbackAccountsList;
     x.send(null);
 }
@@ -75,7 +75,7 @@ function callbackAccountsList() {
 
 function addAccount() {
     let x = new XMLHttpRequest();
-    x.open("GET", "/cabinet?action=addAcc", true);
+    x.open("POST", "/cabinet/accounts/new", true);
     x.onload = callbackAddAccount;
     x.send(null);
 }
@@ -88,7 +88,8 @@ function callbackAddAccount() {
 
 function closeAccount(accountID) {
     let x = new XMLHttpRequest();
-    x.open("GET", "/cabinet?action=deleteAcc&accountID=" + accountID , true);
+    x.open("DELETE", "/cabinet/accounts/" + accountID, true);
+    x.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     x.onload = callbackCloseAccount;
     x.send(null);
 }
@@ -114,10 +115,11 @@ function addMoney(accountID, accountIndex){
     if(!/^\d+$/.test(money)) {alert("Entered value not a number");return;}
     let x = new XMLHttpRequest();
     x.accountIndex = accountIndex;
-    x.open("GET", "/cabinet?action=addMoney&accountID="
-        + accountID + "&money=" + money, true);
+    let body = "accountID=" + accountID + "&money=" + money;
+    x.open("POST", "/cabinet/addMoney", true);
+    x.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     x.onload = callbackAddMoney;
-    x.send(null);
+    x.send(body);
 }
 
 function callbackAddMoney() {
@@ -133,10 +135,11 @@ function transferMoney(accountFromID, accountFromIndex) {
     if(!/^\d+$/.test(money)) {alert("Entered value not a number");return;}
     let x = new XMLHttpRequest();
     x.accountIndex = accountFromIndex;
-    x.open("GET", "/cabinet?action=transferMoney&from="
-        + accountFromID + "&to=" + accountToID + "&money=" + money, true);
+    let body = "from=" + accountFromID + "&to=" + accountToID + "&money=" + money;
+    x.open("POST", "/cabinet/transferMoney", true);
+    x.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     x.onload = callbackTransferMoney;
-    x.send(null);
+    x.send(body);
 }
 
 function callbackTransferMoney(){
@@ -150,14 +153,14 @@ function callbackTransferMoney(){
 
 function showOperationHistory() {
     let x = new XMLHttpRequest();
-    x.open("GET", "/cabinet?action=getOperationHistory", true);
+    x.open("GET", "/cabinet/operations", true);
     x.onload = callbackHistory;
     x.send(null);
 }
 
 function updateOperationHistory() {
     let x = new XMLHttpRequest();
-    x.open("GET", "/cabinet?action=getOperationHistory", true);
+    x.open("GET", "/cabinet/operations", true);
     x.onload = callbackHistoryUpdateOnly;
     x.send(null);
 }
@@ -187,22 +190,22 @@ function callbackHistoryUpdateOnly() {
         let row = history.insertRow();
         row.insertCell();
         let oper = operations.childNodes[i];
-        history.rows[i].cells[0].innerHTML = "<p style='font-size: 20px'>" +
+        history.rows[i].cells[0].innerHTML = "<h style='font-size: 20px'>" +
             oper.getElementsByTagName("info")[0].childNodes[0].nodeValue +
-            "</p>"
+            "</h>"
     }
 }
 
 function showAllAccountsInfo() {
     let x = new XMLHttpRequest();
-    x.open("GET", "/cabinet?action=getAllAccountsInfo", true);
+    x.open("GET", "/cabinet/accounts", true);
     x.onload = callbackAllAccountsInfo;
     x.send(null);
 }
 
 function updateAllAccountsInfo() {
     let x = new XMLHttpRequest();
-    x.open("GET", "/cabinet?action=getAllAccountsInfo", true);
+    x.open("GET", "/cabinet/accounts", true);
     x.onload = callbackAllAccountsInfoUpdateOnly;
     x.send(null);
 }
@@ -233,10 +236,10 @@ function callbackAllAccountsInfoUpdateOnly() {
         row.insertCell();
         let acc = accounts.childNodes[i];
 
-        allAcc.rows[i].cells[0].innerHTML = "<p style='font-size: 20px'>"
+        allAcc.rows[i].cells[0].innerHTML = "<h style='font-size: 20px'>"
             + acc.getElementsByTagName("id")[0].childNodes[0].nodeValue + ": "
             + acc.getElementsByTagName("money")[0].childNodes[0].nodeValue + "$" +
-            "</p>"
+            "</h>"
     }
 }
 

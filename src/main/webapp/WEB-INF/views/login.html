@@ -1,70 +1,42 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<!--<link rel="stylesheet" type="text/css" href="css/style.css"/>-->
-<link rel="stylesheet" href="css/style.css" />
-<!--<link rel="stylesheet" th:href="@{/css/style.css}" />-->
-<!--<script src="js/script.js"></script>-->
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
+    <link th:href="@{/resources/css/style.css}" rel="stylesheet" />
+    <script type="text/javascript" th:src="@{/resources/js/script.js}"></script>
 </head>
 <body>
 
-<form th:method="POST" th:action="@{/register}" th:object="${user}">
-    <label for="register_name">Enter name: </label>
-    <input type="text" th:field="*{login}" id="register_name"/>
-    <br/>
-    <label for="register_password">Enter password: </label>
-    <input type="text" th:field="*{password}" id="register_password"/>
-    <br/>
-    <input type="submit" value="Create"/>
-</form>
+<div class="tab">
+    <button class="tablinks" onclick="openTab(event, 'Register')" id="defaultOpen">Register</button>
+    <button class="tablinks" onclick="openTab(event, 'Login')">Login</button>
+</div>
+<div id="Register" class="tabcontent">
+    <form th:method="POST" th:action="@{/register}" th:object="${user}">
+        <label for="register_name">Enter name: </label>
+        <input type="text" th:field="*{login}" id="register_name"/>
+        <br/>
+        <label for="register_password">Enter password: </label>
+        <input type="text" th:field="*{password}" id="register_password"/>
+        <br/>
+        <input type="submit" value="Confirm"/>
+    </form>
+</div>
+<div id="Login" class="tabcontent">
+    <form th:method="POST" th:action="@{/login}" th:object="${user}">
+        <label for="login_name">Enter name: </label>
+        <input type="text" th:field="*{login}" id="login_name"/>
+        <br/>
+        <label for="login_password">Enter password: </label>
+        <input type="text" th:field="*{password}" id="login_password"/>
+        <br/>
+        <input type="submit" value="Confirm"/>
+    </form>
+</div>
 
-<form th:method="POST" th:action="@{/login}" th:object="${user}">
-    <label for="login_name">Enter name: </label>
-    <input type="text" th:field="*{login}" id="login_name"/>
-    <br/>
-    <label for="login_password">Enter password: </label>
-    <input type="text" th:field="*{password}" id="login_password"/>
-    <br/>
-    <input type="submit" value="Create"/>
-</form>
-
-<!--<div class="tab">-->
-<!--    <button class="tablinks" onclick="openTab(event, 'Register')" id="defaultOpen">Register</button>-->
-<!--    <button class="tablinks" onclick="openTab(event, 'Login')">Login</button>-->
-<!--</div>-->
-<!--<div id="Register" class="tabcontent">-->
-<!--    <form action="register" method="POST">-->
-<!--        <label> Name:-->
-<!--            <input name="username" />-->
-<!--        </label>-->
-<!--        <br><br>-->
-<!--        <label> Password:-->
-<!--            <input name="password" />-->
-<!--        </label>-->
-<!--        <br><br>-->
-<!--        <input type="hidden" name="type" value="register" />-->
-<!--        <input type="submit" value="Submit" />-->
-<!--    </form>-->
-<!--</div>-->
-<!--<div id="Login" class="tabcontent">-->
-<!--    <form action="login" method="POST">-->
-<!--        <label> Name:-->
-<!--            <input name="username" />-->
-<!--        </label>-->
-<!--        <br><br>-->
-<!--        <label> Password:-->
-<!--            <input name="password" />-->
-<!--        </label>-->
-<!--        <br><br>-->
-<!--        <input type="hidden" name="type" value="login" />-->
-<!--        <input type="submit" value="Submit" />-->
-<!--    </form>-->
-<!--</div>-->
-
-<!--<script>-->
-<!--    document.getElementById("defaultOpen").click();-->
-<!--</script>-->
+<script>
+    document.getElementById("defaultOpen").click();
+</script>
 </body>
 </html>
