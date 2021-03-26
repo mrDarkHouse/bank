@@ -18,7 +18,4 @@ public class OperationFactory {
             default:throw new IllegalArgumentException("No operation with type " + operationType);
         }
     }
-
-
-
 }

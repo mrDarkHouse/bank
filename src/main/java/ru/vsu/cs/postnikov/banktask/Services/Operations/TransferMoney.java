@@ -16,9 +16,9 @@ public class TransferMoney extends Operation {
     }
 
     @Override
-    public String getInfo() {
+    public String initInfo() {
         return "Перечисление " + money + "$ со счета " + accountNumberFrom + " на счет " +
-                 accountNumberTo;
+                accountNumberTo;
     }
 
     @Override

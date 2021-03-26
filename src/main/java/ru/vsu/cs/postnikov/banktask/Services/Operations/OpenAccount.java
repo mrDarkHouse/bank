@@ -14,7 +14,7 @@ public class OpenAccount extends Operation {
     }
 
     @Override
-    public String getInfo() {
+    public String initInfo() {
         return user.getLogin() + " открыл счет №" + accountNumber;
     }
 

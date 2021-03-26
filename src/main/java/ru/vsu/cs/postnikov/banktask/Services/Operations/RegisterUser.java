@@ -12,7 +12,7 @@ public class RegisterUser extends Operation {
     }
 
     @Override
-    public String getInfo() {
+    public String initInfo() {
         return "Регистрация пользователя " + userName;
     }
 

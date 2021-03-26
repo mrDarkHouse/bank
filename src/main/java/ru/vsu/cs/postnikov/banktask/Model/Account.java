@@ -1,10 +1,16 @@
 package ru.vsu.cs.postnikov.banktask.Model;
 
+import javax.xml.bind.annotation.*;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-public class Account {
+@XmlRootElement(name = "account")
+@XmlAccessorType(XmlAccessType.NONE)
+public class Account{
+
+    @XmlElement
     private long id;
+    @XmlElement
     private BigDecimal money;
     private long ownerID;
 
@@ -12,6 +18,9 @@ public class Account {
         this.id = id;
         this.money = new BigDecimal(0);
         this.ownerID = ownerID;
+    }
+
+    public Account() {
     }
 
     public long getId() {
@@ -22,12 +31,20 @@ public class Account {
         return money;
     }
 
+    public long getOwnerID() {
+        return ownerID;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public void setMoney(BigDecimal money) {
         this.money = money;
     }
 
-    public long getOwnerID() {
-        return ownerID;
+    public void setOwnerID(long ownerID) {
+        this.ownerID = ownerID;
     }
 
     @Override

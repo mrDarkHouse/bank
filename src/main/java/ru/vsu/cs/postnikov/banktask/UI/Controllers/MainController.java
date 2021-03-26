@@ -1,6 +1,8 @@
 package ru.vsu.cs.postnikov.banktask.UI.Controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -29,45 +31,28 @@ public class MainController{
     }
 
     @GetMapping("/{id}")
-    public String show(@PathVariable("id") int id, Model model){
+    public String show(@PathVariable("id") long id, Model model){
         User user = manager.getUserById(id);
-        List<Account> acc = manager.getAccounts(user.getId());
-        OperationHistory hist = manager.getHistory(user.getId());
         model.addAttribute("user", user);
-        model.addAttribute("accounts", acc);
-        model.addAttribute("history", hist);
         return "cabinet";
     }
 
     @ResponseBody
     @GetMapping("/accounts/{index}")
-    public void getAcc(@PathVariable("index") int index, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public ResponseEntity<Account> getAcc(@PathVariable("index") int index, HttpServletRequest request) {
         long userID = ((User)request.getSession().getAttribute("user")).getId();
-//        int index = Integer.parseInt(request.getParameter("index"));
         Account account = manager.getAccounts(userID).get(index);
-        response.setCharacterEncoding("UTF-8");
-        response.setContentType("text/xml");
-        response.setHeader("Cache-Control", "no-cache");
-        response.getWriter().write("<accounts><account>" +
-                "<id>" + account.getId() + "</id>" +
-                "<money>" + account.getMoney() + "</money>" +
-                "</account></accounts>");
+        return new ResponseEntity<>(account, HttpStatus.OK);
     }
 
     @ResponseBody
     @GetMapping("/accounts")
-    public void getAccList(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public XMLAccountList getAccList(HttpServletRequest request) {
         long userID = ((User)request.getSession().getAttribute("user")).getId();
         List<Account> accounts = manager.getAccounts(userID);
-        response.setCharacterEncoding("UTF-8");
-        response.setContentType("text/xml");
-        response.setHeader("Cache-Control", "no-cache");
-        response.getWriter().write("<accounts>");
-        for (Account a:accounts){
-            response.getWriter().write("<account><id>" + a.getId() + "</id>");
-            response.getWriter().write("<money>" + a.getMoney() + "</money></account>");
-        }
-        response.getWriter().write("</accounts>");
+        XMLAccountList list = new XMLAccountList();
+        list.getAccounts().addAll(accounts);
+        return list;
     }
 
     @ResponseBody
@@ -79,9 +64,8 @@ public class MainController{
 
     @ResponseBody
     @DeleteMapping("/accounts/{id}")
-    public void deleteAcc(@PathVariable("id") int accountID, HttpServletRequest request) {
+    public void deleteAcc(@PathVariable("id") long accountID, HttpServletRequest request) {
         User user = ((User)request.getSession().getAttribute("user"));
-//        long accountID = Long.parseLong(request.getParameter("accountID"));
         manager.executeOperation(new CloseAccount(accountID).setUser(user));
     }
 
@@ -108,34 +92,8 @@ public class MainController{
 
     @ResponseBody
     @GetMapping("/operations")
-    public void getOperationHistory(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public OperationHistory getOperationHistory(HttpServletRequest request) {
         long userID = ((User)request.getSession().getAttribute("user")).getId();
-        List<Operation> operations = manager.getHistory(userID).getOperations();
-
-        response.setCharacterEncoding("UTF-8");
-        response.setContentType("text/xml");
-        response.setHeader("Cache-Control", "no-cache");
-        response.getWriter().write("<operations>");
-        for (Operation o:operations){
-            response.getWriter().write("<operation><info>" + o.getInfo() + "</info></operation>");
-        }
-        response.getWriter().write("</operations>");
+        return manager.getHistory(userID);
     }
-
-//    @ResponseBody
-//    @GetMapping("/getAllAccountsInfo")
-//    public void getAllAccountsInfo(HttpServletRequest request, HttpServletResponse response) throws IOException {
-//        long userID = ((User)request.getSession().getAttribute("user")).getId();
-//        List<Account> accounts = manager.getAccounts(userID);
-//
-//        response.setCharacterEncoding("UTF-8");
-//        response.setContentType("text/xml");
-//        response.setHeader("Cache-Control", "no-cache");
-//        response.getWriter().write("<accounts>");
-//        for (Account a:accounts){
-//            response.getWriter().write("<account><id>" + a.getId() + "</id>");
-//            response.getWriter().write("<money>" + a.getMoney() + "</money></account>");
-//        }
-//        response.getWriter().write("</accounts>");
-//    }
 }

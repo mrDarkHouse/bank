@@ -11,7 +11,7 @@ public class CloseAccount extends Operation {
     }
 
     @Override
-    public String getInfo() {
+    public String initInfo() {
         return user.getLogin() + " закрыл счет №" + accountNumber;
     }
 

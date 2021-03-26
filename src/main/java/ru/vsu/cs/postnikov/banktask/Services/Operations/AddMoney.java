@@ -14,7 +14,7 @@ public class AddMoney extends Operation {
     }
 
     @Override
-    public String getInfo() {
+    public String initInfo() {
         return "Зачисление " + money + "$ на счет №"  + accountNumber;
     }
 

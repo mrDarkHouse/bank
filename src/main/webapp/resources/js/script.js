@@ -25,7 +25,7 @@ function chooseAccount(userAccountIndex) {
 
 function callbackAboutAccount() {
     let xml = this.responseXML;
-    let account = xml.getElementsByTagName("accounts")[0];
+    let account = xml.getElementsByTagName("account")[0];
     let id = account.getElementsByTagName("id")[0].childNodes[0].nodeValue;
     let money = account.getElementsByTagName("money")[0].childNodes[0].nodeValue;
 
