@@ -5,7 +5,7 @@ import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatche
 public class Initializer extends AbstractAnnotationConfigDispatcherServletInitializer {
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return null;
+        return new Class[]{HibernateConfig.class};
     }
 
     @Override
@@ -17,6 +17,4 @@ public class Initializer extends AbstractAnnotationConfigDispatcherServletInitia
     protected String[] getServletMappings() {
         return new String[]{"/"};
     }
-
-
 }

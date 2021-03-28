@@ -2,12 +2,11 @@ package ru.vsu.cs.postnikov.banktask.DAO.SqlDB;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.stereotype.Component;
 import ru.vsu.cs.postnikov.banktask.DAO.IDataContainer;
 import ru.vsu.cs.postnikov.banktask.Model.Account;
 import ru.vsu.cs.postnikov.banktask.Model.OperationHistory;
 import ru.vsu.cs.postnikov.banktask.Model.User;
-import ru.vsu.cs.postnikov.banktask.Services.Operations.Operation;
+import ru.vsu.cs.postnikov.banktask.Model.Operation;
 import ru.vsu.cs.postnikov.banktask.Services.Operations.OperationFactory;
 import ru.vsu.cs.postnikov.banktask.Tools.BankException;
 
@@ -16,12 +15,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @PropertySource("classpath:database.properties")
-@Component
+//@Component
 public class MySqlDB implements IDataContainer {
     private Connection con;
     private Statement stmt;
@@ -91,9 +88,9 @@ public class MySqlDB implements IDataContainer {
     }
 
     @Override
-    public void deleteAccount(long userId, long accountNumber) {
-        String delete = "DELETE FROM accounts WHERE id = " +
-                accountNumber + " AND ownerID = " + userId;
+    public void deleteAccount(long accountNumber) {
+        String delete = "DELETE FROM accounts WHERE id = " + accountNumber;
+//                + " AND ownerID = " + userId;
         sendUpdate(delete);
     }
 
@@ -169,12 +166,35 @@ public class MySqlDB implements IDataContainer {
     }
 
     @Override
-    public Map<Long, User> getUsersMap() {
-        List<User> users = getUsersList();
-        Map<Long, User> userMap = new HashMap<>();
-        for (User user:users) userMap.put(user.getId(), user);
-        return userMap;
+    public User getUser(long id) {
+        String select = "SELECT * FROM users WHERE id=" + id;
+        try {
+            stmt = con.createStatement();
+            ResultSet rs =  stmt.executeQuery(select);
+            if(rs.next()){
+                return (new User(
+                        rs.getInt("id"),
+                        rs.getString("login"),
+                        rs.getString("password")
+                ));
+            }
+        } catch (SQLException sqlEx) {
+            sqlEx.printStackTrace();
+        } finally {
+            if(stmt != null) try { stmt.close(); } catch(SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return null;
     }
+
+//    @Override
+//    public Map<Long, User> getUsersMap() {
+//        List<User> users = getUsersList();
+//        Map<Long, User> userMap = new HashMap<>();
+//        for (User user:users) userMap.put(user.getId(), user);
+//        return userMap;
+//    }
 
     public List<Account> getUserAccounts(long userID){
         List<Account> list = new ArrayList<>();
@@ -187,6 +207,11 @@ public class MySqlDB implements IDataContainer {
         List<Account> list = new ArrayList<>();
         String select = "SELECT * FROM accounts";
         return getAccounts(list, select);
+    }
+
+    @Override
+    public Account getAccount(long accountNumber) {
+        return null;
     }
 
     private List<Account> getAccounts(List<Account> list, String select) {

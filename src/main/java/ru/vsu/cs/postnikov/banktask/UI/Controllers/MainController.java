@@ -15,7 +15,6 @@ import ru.vsu.cs.postnikov.banktask.Services.Operations.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -90,10 +89,10 @@ public class MainController{
         }
     }
 
-    @ResponseBody
-    @GetMapping("/operations")
-    public OperationHistory getOperationHistory(HttpServletRequest request) {
-        long userID = ((User)request.getSession().getAttribute("user")).getId();
-        return manager.getHistory(userID);
-    }
+//    @ResponseBody
+//    @GetMapping("/operations")
+//    public OperationHistory getOperationHistory(HttpServletRequest request) {
+//        long userID = ((User)request.getSession().getAttribute("user")).getId();
+//        return manager.getHistory(userID);
+//    }
 }

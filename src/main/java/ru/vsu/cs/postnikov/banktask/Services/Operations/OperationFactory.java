@@ -1,5 +1,7 @@
 package ru.vsu.cs.postnikov.banktask.Services.Operations;
 
+import ru.vsu.cs.postnikov.banktask.Model.Operation;
+
 import java.math.BigDecimal;
 
 public class OperationFactory {

@@ -1,17 +1,25 @@
 package ru.vsu.cs.postnikov.banktask.Model;
 
+import javax.persistence.*;
 import javax.xml.bind.annotation.*;
 import java.math.BigDecimal;
 import java.util.Objects;
 
 @XmlRootElement(name = "account")
 @XmlAccessorType(XmlAccessType.NONE)
+@Entity
+@Table(name = "accounts")
 public class Account{
 
     @XmlElement
+    @Id
+    @Column(name = "id")
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @XmlElement
+    @Column(name = "money")
     private BigDecimal money;
+    @Column(name = "ownerID")
     private long ownerID;
 
     public Account(long id, long ownerID) {

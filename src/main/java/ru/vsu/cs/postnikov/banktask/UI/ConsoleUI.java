@@ -3,7 +3,7 @@ package ru.vsu.cs.postnikov.banktask.UI;
 import ru.vsu.cs.postnikov.banktask.Model.Account;
 import ru.vsu.cs.postnikov.banktask.Model.User;
 import ru.vsu.cs.postnikov.banktask.Services.Manager;
-import ru.vsu.cs.postnikov.banktask.Services.Operations.Operation;
+import ru.vsu.cs.postnikov.banktask.Model.Operation;
 
 import java.util.HashMap;
 import java.util.List;

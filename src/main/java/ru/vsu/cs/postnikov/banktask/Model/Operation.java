@@ -1,9 +1,12 @@
-package ru.vsu.cs.postnikov.banktask.Services.Operations;
+package ru.vsu.cs.postnikov.banktask.Model;
 
 
-import ru.vsu.cs.postnikov.banktask.Model.User;
 import ru.vsu.cs.postnikov.banktask.Services.Manager;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -11,8 +14,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "operation")
 @XmlAccessorType(XmlAccessType.NONE)
+//@Entity
+//@Table(name = "operations")
 public abstract class Operation{
+//    @Id
+//    @Column(name = "id")
     private long id;
+//    @Column(name = "ownerID")
     protected User user;
     @XmlElement
     protected String info;

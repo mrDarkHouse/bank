@@ -1,12 +1,13 @@
-package ru.vsu.cs.postnikov.banktask.DAO;
+package ru.vsu.cs.postnikov.banktask.DAO.HardCode;
 
 import org.springframework.stereotype.Component;
+import ru.vsu.cs.postnikov.banktask.DAO.IDataContainer;
 import ru.vsu.cs.postnikov.banktask.Model.Account;
 import ru.vsu.cs.postnikov.banktask.Model.OperationHistory;
 import ru.vsu.cs.postnikov.banktask.Model.User;
 import ru.vsu.cs.postnikov.banktask.Services.Operations.AddMoney;
 import ru.vsu.cs.postnikov.banktask.Services.Operations.OpenAccount;
-import ru.vsu.cs.postnikov.banktask.Services.Operations.Operation;
+import ru.vsu.cs.postnikov.banktask.Model.Operation;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -48,10 +49,9 @@ public class HardCodeBD implements IDataContainer {
     }
 
     @Override
-    public Map<Long, User> getUsersMap() {
-        Map<Long, User> map = new HashMap<>();
-        for (User user:users) map.put(user.getId(), user);
-        return map;
+    public User getUser(long id) {
+        for (User user:users) if(user.getId() == id) return user;
+        return null;
     }
 
     @Override
@@ -65,8 +65,8 @@ public class HardCodeBD implements IDataContainer {
     }
 
     @Override
-    public void deleteAccount(long userId, long accountNumber) {
-        accounts.removeIf(a -> a.getOwnerID() == userId && a.getId() == accountNumber);
+    public void deleteAccount(long accountNumber) {
+//        accounts.removeIf(a -> a.getOwnerID() == userId && a.getId() == accountNumber);
     }
 
     @Override
@@ -117,6 +117,11 @@ public class HardCodeBD implements IDataContainer {
 
     public List<Account> getAllAccounts(){
         return accounts;
+    }
+
+    @Override
+    public Account getAccount(long accountNumber) {
+        return null;
     }
 
     @Override

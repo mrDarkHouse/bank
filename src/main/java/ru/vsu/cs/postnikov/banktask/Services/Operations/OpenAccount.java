@@ -1,5 +1,6 @@
 package ru.vsu.cs.postnikov.banktask.Services.Operations;
 
+import ru.vsu.cs.postnikov.banktask.Model.Operation;
 import ru.vsu.cs.postnikov.banktask.Services.Manager;
 
 public class OpenAccount extends Operation {

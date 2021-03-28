@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import ru.vsu.cs.postnikov.banktask.Model.Account;
+import ru.vsu.cs.postnikov.banktask.Model.Operation;
 import ru.vsu.cs.postnikov.banktask.Model.User;
 import ru.vsu.cs.postnikov.banktask.Services.Manager;
 import ru.vsu.cs.postnikov.banktask.Services.Operations.*;
