@@ -1,5 +1,7 @@
 package ru.vsu.cs.postnikov.banktask.Model;
 
+import ru.vsu.cs.postnikov.banktask.Model.Operations.Operation;
+
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.List;

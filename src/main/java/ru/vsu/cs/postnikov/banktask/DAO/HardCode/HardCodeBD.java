@@ -5,9 +5,9 @@ import ru.vsu.cs.postnikov.banktask.DAO.IDataContainer;
 import ru.vsu.cs.postnikov.banktask.Model.Account;
 import ru.vsu.cs.postnikov.banktask.Model.OperationHistory;
 import ru.vsu.cs.postnikov.banktask.Model.User;
-import ru.vsu.cs.postnikov.banktask.Services.Operations.AddMoney;
-import ru.vsu.cs.postnikov.banktask.Services.Operations.OpenAccount;
-import ru.vsu.cs.postnikov.banktask.Model.Operation;
+import ru.vsu.cs.postnikov.banktask.Model.Operations.AddMoney;
+import ru.vsu.cs.postnikov.banktask.Model.Operations.OpenAccount;
+import ru.vsu.cs.postnikov.banktask.Model.Operations.Operation;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -37,10 +37,10 @@ public class HardCodeBD implements IDataContainer {
         accounts.add(new Account(1200001, 0){{
             setMoney(new BigDecimal(300));
         }});
-        operations.add(new OpenAccount(1200000).setUser(users.get(0)));
-        operations.add(new AddMoney(1200000, new BigDecimal(100)).setUser(users.get(0)));
-        operations.add(new OpenAccount(1200001).setUser(users.get(0)));
-        operations.add(new AddMoney(1200001, new BigDecimal(300)).setUser(users.get(0)));
+        operations.add(new OpenAccount(1200000).setUserAndReturn(users.get(0)));
+        operations.add(new AddMoney(1200000, new BigDecimal(100)).setUserAndReturn(users.get(0)));
+        operations.add(new OpenAccount(1200001).setUserAndReturn(users.get(0)));
+        operations.add(new AddMoney(1200001, new BigDecimal(300)).setUserAndReturn(users.get(0)));
     }
 
     @Override

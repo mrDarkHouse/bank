@@ -3,7 +3,7 @@ package ru.vsu.cs.postnikov.banktask.DAO;
 import ru.vsu.cs.postnikov.banktask.Model.Account;
 import ru.vsu.cs.postnikov.banktask.Model.OperationHistory;
 import ru.vsu.cs.postnikov.banktask.Model.User;
-import ru.vsu.cs.postnikov.banktask.Model.Operation;
+import ru.vsu.cs.postnikov.banktask.Model.Operations.Operation;
 
 import java.math.BigDecimal;
 import java.util.List;

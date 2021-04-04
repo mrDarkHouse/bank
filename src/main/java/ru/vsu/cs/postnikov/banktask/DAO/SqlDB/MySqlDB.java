@@ -6,8 +6,8 @@ import ru.vsu.cs.postnikov.banktask.DAO.IDataContainer;
 import ru.vsu.cs.postnikov.banktask.Model.Account;
 import ru.vsu.cs.postnikov.banktask.Model.OperationHistory;
 import ru.vsu.cs.postnikov.banktask.Model.User;
-import ru.vsu.cs.postnikov.banktask.Model.Operation;
-import ru.vsu.cs.postnikov.banktask.Services.Operations.OperationFactory;
+import ru.vsu.cs.postnikov.banktask.Model.Operations.Operation;
+import ru.vsu.cs.postnikov.banktask.Model.Operations.OperationFactory;
 import ru.vsu.cs.postnikov.banktask.Tools.BankException;
 
 import javax.annotation.PostConstruct;
@@ -258,7 +258,7 @@ public class MySqlDB implements IDataContainer {
                         rs.getString("login"),
                         rs.getString("password")
                 );
-                operation.setUser(user);
+                operation.setUserAndReturn(user);
                 history.addOperation(operation);
             }
             return history;

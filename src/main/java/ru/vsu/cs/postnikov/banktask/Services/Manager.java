@@ -8,7 +8,7 @@ import ru.vsu.cs.postnikov.banktask.DAO.IDataContainer;
 import ru.vsu.cs.postnikov.banktask.Model.Account;
 import ru.vsu.cs.postnikov.banktask.Model.OperationHistory;
 import ru.vsu.cs.postnikov.banktask.Model.User;
-import ru.vsu.cs.postnikov.banktask.Model.Operation;
+import ru.vsu.cs.postnikov.banktask.Model.Operations.Operation;
 import ru.vsu.cs.postnikov.banktask.Tools.BankException;
 import ru.vsu.cs.postnikov.banktask.Tools.IdTool;
 
@@ -18,10 +18,6 @@ import java.util.List;
 @Service
 public class Manager {
     private IDataContainer data;
-
-//    public IDataContainer getData() {
-//        return data;
-//    }
 
     @Autowired
     public Manager(@Qualifier("hibernateRepository") IDataContainer data) {

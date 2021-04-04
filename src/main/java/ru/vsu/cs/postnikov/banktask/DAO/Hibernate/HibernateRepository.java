@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import ru.vsu.cs.postnikov.banktask.DAO.IDataContainer;
 import ru.vsu.cs.postnikov.banktask.Model.Account;
-import ru.vsu.cs.postnikov.banktask.Model.Operation;
+import ru.vsu.cs.postnikov.banktask.Model.Operations.Operation;
 import ru.vsu.cs.postnikov.banktask.Model.OperationHistory;
 import ru.vsu.cs.postnikov.banktask.Model.User;
 
@@ -23,11 +23,10 @@ public class HibernateRepository implements IDataContainer {
         this.sessionFactory = sessionFactory;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public List<User> getUsersList() {
         Session session = sessionFactory.getCurrentSession();
-        return session.createQuery("from User").list();
+        return session.createQuery("from User", User.class).list();
     }
 
     @Override
@@ -73,12 +72,11 @@ public class HibernateRepository implements IDataContainer {
         session.delete(account);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public List<Account> getUserAccounts(long userID) {
         Session session = sessionFactory.getCurrentSession();
         Query<Account> query;
-        query = session.createQuery("from Account where ownerID = :userID");
+        query = session.createQuery("from Account where ownerID = :userID", Account.class);
         query.setParameter("userID", userID);
         return query.list();
     }
@@ -94,19 +92,22 @@ public class HibernateRepository implements IDataContainer {
     public Account getAccount(long accountNumber) {
         Session session = sessionFactory.getCurrentSession();
         return session.get(Account.class, accountNumber);
-//        return session.createQuery("from Account where ownerID = :userID and id = : accountNumber")
-//                .list().get(0);
     }
-
 
     @Override
     public long addOperation(Operation operation) {
-        return 0;
+        Session session = sessionFactory.getCurrentSession();
+        session.persist(operation);
+        return operation.getId();
     }
 
     @Override
     public OperationHistory getOperationHistory(long userID) {
-        return null;
+        Session session = sessionFactory.getCurrentSession();
+        OperationHistory history = new OperationHistory();
+        List<Operation> operations = session.createQuery("from Operation ", Operation.class).list();
+        history.setOperations(operations);
+        return history;
     }
 
 }

@@ -26,31 +26,31 @@ public class IdTool {
     }
 
     @PostConstruct
-    public void init(){
+    public void init() {
         List<Long> ids = new ArrayList<>();
         List<Long> accountIds = new ArrayList<>();
-        for (User u:manager.getUsersList()) {
+        for (User u : manager.getUsersList()) {
             ids.add(u.getId());
         }
-        for (Account a:manager.getAllAccounts()){
+        for (Account a : manager.getAllAccounts()) {
             accountIds.add(a.getId());
         }
         alreadyUsedUsersIds = ids;
         alreadyUsedAccountIds = accountIds;
     }
 
-    public static void freeAccountId(long id){
+    public static void freeAccountId(long id) {
         alreadyUsedAccountIds.remove(id);
     }
 
-    public static long generateRandomUserId(){
+    public static long generateRandomUserId() {
         long id = alreadyUsedUsersIds.size() > 0 ?
                 alreadyUsedUsersIds.get(alreadyUsedUsersIds.size() - 1) + 1 : 0;
         alreadyUsedUsersIds.add(id);
         return id;
     }
 
-    public static long generateUserAccountId(){
+    public static long generateUserAccountId() {
         long id = START_ACCOUNT_ID;
         while (alreadyUsedAccountIds.contains(id)) id++;
         alreadyUsedAccountIds.add(id);

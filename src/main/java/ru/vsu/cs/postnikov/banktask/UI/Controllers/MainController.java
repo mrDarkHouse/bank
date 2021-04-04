@@ -11,10 +11,10 @@ import ru.vsu.cs.postnikov.banktask.Model.XMLAccountList;
 import ru.vsu.cs.postnikov.banktask.Model.OperationHistory;
 import ru.vsu.cs.postnikov.banktask.Model.User;
 import ru.vsu.cs.postnikov.banktask.Services.Manager;
-import ru.vsu.cs.postnikov.banktask.Services.Operations.*;
+import ru.vsu.cs.postnikov.banktask.Model.Operations.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -38,16 +38,16 @@ public class MainController{
 
     @ResponseBody
     @GetMapping("/accounts/{index}")
-    public ResponseEntity<Account> getAcc(@PathVariable("index") int index, HttpServletRequest request) {
-        long userID = ((User)request.getSession().getAttribute("user")).getId();
+    public ResponseEntity<Account> getAcc(@PathVariable("index") int index, HttpSession session) {
+        long userID = ((User)session.getAttribute("user")).getId();
         Account account = manager.getAccounts(userID).get(index);
         return new ResponseEntity<>(account, HttpStatus.OK);
     }
 
     @ResponseBody
     @GetMapping("/accounts")
-    public XMLAccountList getAccList(HttpServletRequest request) {
-        long userID = ((User)request.getSession().getAttribute("user")).getId();
+    public XMLAccountList getAccList(HttpSession session) {
+        long userID = ((User)session.getAttribute("user")).getId();
         List<Account> accounts = manager.getAccounts(userID);
         XMLAccountList list = new XMLAccountList();
         list.getAccounts().addAll(accounts);
@@ -56,43 +56,43 @@ public class MainController{
 
     @ResponseBody
     @PostMapping("/accounts/new")
-    public void addAcc(HttpServletRequest request) {
-        User user = ((User)request.getSession().getAttribute("user"));
-        manager.executeOperation(new OpenAccount().setUser(user));
+    public void addAcc(HttpSession session) {
+        User user = (User)session.getAttribute("user");
+        manager.executeOperation(new OpenAccount().setUserAndReturn(user));
     }
 
     @ResponseBody
     @DeleteMapping("/accounts/{id}")
-    public void deleteAcc(@PathVariable("id") long accountID, HttpServletRequest request) {
-        User user = ((User)request.getSession().getAttribute("user"));
-        manager.executeOperation(new CloseAccount(accountID).setUser(user));
+    public void deleteAcc(@PathVariable("id") long accountID, HttpSession session) {
+        User user = (User)session.getAttribute("user");
+        manager.executeOperation(new CloseAccount(accountID).setUserAndReturn(user));
     }
 
     @ResponseBody
     @PostMapping("/addMoney")
-    public void addMoney(HttpServletRequest request) {
-        User user = ((User)request.getSession().getAttribute("user"));
-        long accountID = Long.parseLong(request.getParameter("accountID"));
-        BigDecimal money = new BigDecimal(request.getParameter("money"));
-        manager.executeOperation(new AddMoney(accountID, money).setUser(user));
+    public void addMoney(HttpSession session,
+                         @RequestParam("accountID") long accountID,
+                         @RequestParam("money") BigDecimal money) {
+        User user = ((User)session.getAttribute("user"));
+        manager.executeOperation(new AddMoney(accountID, money).setUserAndReturn(user));
     }
 
     @ResponseBody
     @PostMapping("/transferMoney")
-    public void transferMoney(HttpServletRequest request, HttpServletResponse response) {
-        User user = ((User)request.getSession().getAttribute("user"));
-        long from = Long.parseLong(request.getParameter("from"));
-        long to = Long.parseLong(request.getParameter("to"));
-        BigDecimal money = new BigDecimal(request.getParameter("money"));
-        if(!manager.executeOperation(new TransferMoney(from, to, money).setUser(user))){
+    public void transferMoney(HttpSession session, HttpServletResponse response,
+                              @RequestParam("from") long from,
+                              @RequestParam("to") long to,
+                              @RequestParam("money") BigDecimal money) {
+        User user = ((User)session.getAttribute("user"));
+        if(!manager.executeOperation(new TransferMoney(from, to, money).setUserAndReturn(user))){
             response.setStatus(HttpServletResponse.SC_NO_CONTENT);
         }
     }
 
-//    @ResponseBody
-//    @GetMapping("/operations")
-//    public OperationHistory getOperationHistory(HttpServletRequest request) {
-//        long userID = ((User)request.getSession().getAttribute("user")).getId();
-//        return manager.getHistory(userID);
-//    }
+    @ResponseBody
+    @GetMapping("/operations")
+    public OperationHistory getOperationHistory(HttpSession session) {
+        long userID = ((User)session.getAttribute("user")).getId();
+        return manager.getHistory(userID);
+    }
 }

@@ -4,10 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import ru.vsu.cs.postnikov.banktask.Model.Account;
-import ru.vsu.cs.postnikov.banktask.Model.Operation;
+import ru.vsu.cs.postnikov.banktask.Model.Operations.Operation;
 import ru.vsu.cs.postnikov.banktask.Model.User;
 import ru.vsu.cs.postnikov.banktask.Services.Manager;
-import ru.vsu.cs.postnikov.banktask.Services.Operations.*;
+import ru.vsu.cs.postnikov.banktask.Model.Operations.*;
 
 import javax.annotation.PostConstruct;
 import javax.swing.*;
@@ -182,7 +182,7 @@ public class GraphicUI implements UIConnector{
                 @Override
                 public void mouseClicked(MouseEvent e) {
 //                    parent.manager.openAccount(parent.currentUser.getId());
-                    parent.manager.executeOperation(new OpenAccount().setUser(parent.currentUser));
+                    parent.manager.executeOperation(new OpenAccount().setUserAndReturn(parent.currentUser));
                     parent.updateUser();
 
                     parent.showOperationHistory(
@@ -273,7 +273,7 @@ public class GraphicUI implements UIConnector{
                         parent.manager.executeOperation(new AddMoney(
                                 account.getId(),
                                 new BigDecimal(num)
-                                ).setUser(parent.currentUser)
+                                ).setUserAndReturn(parent.currentUser)
                         );
                         parent.updateUser();
 //                        parent.manager.addMoney(parent.currentUser.getId(),
@@ -332,7 +332,7 @@ public class GraphicUI implements UIConnector{
                                 from,
                                 to,
                                 money
-                        ).setUser(parent.currentUser));
+                        ).setUserAndReturn(parent.currentUser));
                         parent.updateUser();
                         updateAboutAccount(account);
                         parent.showOperationHistory(
@@ -356,7 +356,7 @@ public class GraphicUI implements UIConnector{
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     parent.manager.executeOperation(
-                            new CloseAccount(account.getId()).setUser(parent.currentUser)
+                            new CloseAccount(account.getId()).setUserAndReturn(parent.currentUser)
                     );
                     parent.updateUser();
 //                    parent.manager.closeAccount(parent.currentUser.getId(), account.getId());

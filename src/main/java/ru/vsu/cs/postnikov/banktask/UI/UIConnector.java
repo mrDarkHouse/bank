@@ -2,7 +2,7 @@ package ru.vsu.cs.postnikov.banktask.UI;
 
 
 import ru.vsu.cs.postnikov.banktask.Model.Account;
-import ru.vsu.cs.postnikov.banktask.Model.Operation;
+import ru.vsu.cs.postnikov.banktask.Model.Operations.Operation;
 
 import java.util.List;
 

@@ -1,6 +1,4 @@
-package ru.vsu.cs.postnikov.banktask.Services.Operations;
-
-import ru.vsu.cs.postnikov.banktask.Model.Operation;
+package ru.vsu.cs.postnikov.banktask.Model.Operations;
 
 import java.math.BigDecimal;
 

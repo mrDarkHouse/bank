@@ -10,11 +10,9 @@ import java.util.Objects;
 @Entity
 @Table(name = "accounts")
 public class Account{
-
     @XmlElement
     @Id
     @Column(name = "id")
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @XmlElement
     @Column(name = "money")
